@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RabbitMQ Example</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 20px;
+      }
+      form {
+        margin-bottom: 20px;
+      }
+      #messages {
+        border: 1px solid #ddd;
+        padding: 10px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>RabbitMQ Example</h1>
+    <form action="/send" method="post">
+      <label for="message">Message:</label>
+      <input type="text" id="message" name="message" required />
+      <button type="submit">Send</button>
+    </form>
+
+    <h2>Received Messages</h2>
+    <div id="messages"></div>
+
+    <script>
+      const eventSource = new EventSource("/events");
+      const messagesDiv = document.getElementById("messages");
+
+      eventSource.onmessage = (event) => {
+        const message = event.data;
+        const messageElement = document.createElement("p");
+        messageElement.textContent = message;
+        messagesDiv.appendChild(messageElement);
+      };
+    </script>
+  </body>
+</html>
